@@ -40,7 +40,7 @@ class LocationHub(private val context: Context) {
         if (!hasPermission()) return null
         val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return withTimeoutOrNull(timeoutMs) {
-            suspendCancellableCoroutine { cont ->
+            suspendCancellableCoroutine<Fix> { cont ->
                 val listener = object : LocationListener {
                     override fun onLocationChanged(location: Location) {
                         val fix = location.toFix()

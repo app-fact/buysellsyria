@@ -115,34 +115,36 @@ class ReceiptRenderer(private val width: Int) {
     private fun draw(): Bitmap {
         val margin = 6
         val inner = width - 2 * margin
-        val ops = mutableListOf<Pair<Int, (Canvas, Int) -> Unit>>() // height, drawer(y)
+        val heights = mutableListOf<Int>()
+        val drawers = mutableListOf<(Canvas, Int) -> Unit>()
+        fun add(h: Int, op: (Canvas, Int) -> Unit) { heights += h; drawers += op }
         for (r in rows) when (r) {
             is Row.Text -> {
                 val l = layout(r.text, r.size, r.bold, inner, r.align)
-                ops += l.height + 4 to { c, y -> c.save(); c.translate(margin.toFloat(), y.toFloat()); l.draw(c); c.restore() }
+                add(l.height + 4) { c, y -> c.save(); c.translate(margin.toFloat(), y.toFloat()); l.draw(c); c.restore() }
             }
             is Row.Pair -> {
                 val leftW = (paint(r.size, r.bold).measureText(r.left) + 4).toInt().coerceAtMost(inner / 2)
                 val left = layout(r.left, r.size, r.bold, leftW, Layout.Alignment.ALIGN_OPPOSITE)
                 val right = layout(r.right, r.size, r.bold, inner - leftW - 8, start)
                 val h = maxOf(left.height, right.height) + 4
-                ops += h to { c, y ->
+                add(h) { c, y ->
                     c.save(); c.translate((margin + leftW + 8).toFloat(), y.toFloat()); right.draw(c); c.restore()
                     c.save(); c.translate(margin.toFloat(), y.toFloat()); left.draw(c); c.restore()
                 }
             }
-            Row.Separator -> ops += 14 to { c, y ->
+            Row.Separator -> add(14) { c, y ->
                 val p = Paint().apply { color = Color.BLACK; strokeWidth = 2f; pathEffect = android.graphics.DashPathEffect(floatArrayOf(8f, 6f), 0f) }
                 c.drawLine(margin.toFloat(), y + 7f, (width - margin).toFloat(), y + 7f, p)
             }
-            is Row.Space -> ops += r.px to { _, _ -> }
+            is Row.Space -> add(r.px) { _, _ -> }
         }
-        val height = ops.sumOf { it.first }.coerceAtLeast(1)
+        val height = heights.sum().coerceAtLeast(1)
         val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bmp)
         canvas.drawColor(Color.WHITE)
         var y = 0
-        for ((h, op) in ops) { op(canvas, y); y += h }
+        for (i in heights.indices) { drawers[i](canvas, y); y += heights[i] }
         rows.clear()
         return bmp
     }

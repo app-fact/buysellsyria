@@ -22,8 +22,11 @@ interface ProductDao {
     @Upsert
     suspend fun upsert(items: List<ProductEntity>)
 
-    @Query("DELETE FROM products WHERE id NOT IN (:keep)")
-    suspend fun deleteNotIn(keep: List<Long>)
+    @Query("SELECT id FROM products")
+    suspend fun ids(): List<Long>
+
+    @Query("DELETE FROM products WHERE id IN (:ids)")
+    suspend fun deleteIds(ids: List<Long>)
 
     @Query("DELETE FROM products")
     suspend fun clear()
@@ -55,8 +58,11 @@ interface CustomerDao {
     @Query("UPDATE customers SET due = due + :delta WHERE `key` = :key")
     suspend fun addDue(key: String, delta: Double)
 
-    @Query("DELETE FROM customers WHERE serverId IS NOT NULL AND serverId NOT IN (:keep)")
-    suspend fun deleteServerNotIn(keep: List<Long>)
+    @Query("SELECT serverId FROM customers WHERE serverId IS NOT NULL")
+    suspend fun serverIds(): List<Long>
+
+    @Query("DELETE FROM customers WHERE serverId IN (:ids)")
+    suspend fun deleteServerIds(ids: List<Long>)
 
     @Query("DELETE FROM customers")
     suspend fun clear()

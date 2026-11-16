@@ -9,7 +9,7 @@
                 <field name="check_out"/>
                 <field name="rep_id"/>
                 <field name="partner_id"/>
-                <field name="duration" widget="float_time" sum="Total"/>
+                <field name="duration" sum="Total"/>
                 <field name="result" widget="badge"/>
                 <field name="is_manual"/>
                 <field name="state" widget="badge"/>

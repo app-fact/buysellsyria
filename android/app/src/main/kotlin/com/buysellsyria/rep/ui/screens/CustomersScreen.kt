@@ -186,7 +186,8 @@ fun CustomerScreen(nav: NavHostController, key: String) {
     val app = RepApp.instance
     val repo = app.repo
     val scope = rememberCoroutineScope()
-    val customer by repo.customer(key).collectAsState(initial = null)
+    val customerFlow = remember(key) { repo.customer(key) }
+    val customer by customerFlow.collectAsState(initial = null)
     val visit by repo.openVisit.collectAsState(initial = null)
     val profile by repo.session.profile.collectAsState()
     val fix by app.location.last.collectAsState()

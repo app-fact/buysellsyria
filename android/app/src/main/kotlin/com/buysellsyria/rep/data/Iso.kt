@@ -20,10 +20,8 @@ object Iso {
 }
 
 object Fmt {
-    private val dateTime get() = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.US)
-    private val time get() = SimpleDateFormat("HH:mm", Locale.US)
-    fun dateTime(millis: Long): String = dateTime.format(Date(millis))
-    fun time(millis: Long): String = time.format(Date(millis))
+    fun dateTime(millis: Long): String = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.US).format(Date(millis))
+    fun time(millis: Long): String = SimpleDateFormat("HH:mm", Locale.US).format(Date(millis))
     fun duration(fromMillis: Long, toMillis: Long = System.currentTimeMillis()): String {
         val min = ((toMillis - fromMillis) / 60000).coerceAtLeast(0)
         return if (min < 60) "$min د" else "${min / 60} س ${min % 60} د"

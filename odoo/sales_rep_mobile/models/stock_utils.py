@@ -10,10 +10,11 @@ def move_vals(env, product, qty, src, dest, description=None):
     vals = {
         'product_id': product.id,
         'product_uom_qty': qty,
-        'product_uom': product.uom_id.id,
         'location_id': src.id,
         'location_dest_id': dest.id,
     }
+    if 'product_uom' in env['stock.move']._fields:
+        vals['product_uom'] = product.uom_id.id
     if 'name' in env['stock.move']._fields:
         vals['name'] = description or product.display_name
     return vals

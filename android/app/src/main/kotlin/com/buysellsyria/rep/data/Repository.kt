@@ -366,7 +366,9 @@ class Repository(
         if (d.products.isNotEmpty()) db.products().upsert(d.products.map {
             ProductEntity(it.id, it.name, it.default_code, it.barcode, it.uom, it.category, it.list_price, it.load_price)
         })
-        db.products().deleteNotIn(d.product_ids)
+        // prune in chunks: SQLite limits the number of bound variables
+        val keepProducts = d.product_ids.toHashSet()
+        db.products().ids().filterNot { it in keepProducts }.chunked(500).forEach { db.products().deleteIds(it) }
 
         for (c in d.customers) {
             val existing = db.customers().byServerId(c.id) ?: c.uuid?.let { db.customers().byUuid(it) }
@@ -376,7 +378,8 @@ class Repository(
                 lat = c.latitude, lng = c.longitude, pricelistId = c.pricelist_id, due = c.due,
             ))
         }
-        db.customers().deleteServerNotIn(d.customer_ids)
+        val keepCustomers = d.customer_ids.toHashSet()
+        db.customers().serverIds().filterNot { it in keepCustomers }.chunked(500).forEach { db.customers().deleteServerIds(it) }
 
         db.prices().clear()
         db.prices().insert(d.prices.flatMap { (pl, m) ->

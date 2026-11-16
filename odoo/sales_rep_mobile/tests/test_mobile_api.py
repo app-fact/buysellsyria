@@ -1,9 +1,12 @@
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.exceptions import UserError
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import tagged
 
 
 @tagged('post_install', '-at_install')
-class TestMobileApi(TransactionCase):
+class TestMobileApi(AccountTestInvoicingCommon):
+    """AccountTestInvoicingCommon provides a company with a chart of accounts,
+    so loading invoices can be posted in a blank test database."""
 
     @classmethod
     def setUpClass(cls):

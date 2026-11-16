@@ -90,12 +90,14 @@ fun SaleScreen(nav: NavHostController, mode: SaleMode, customerKey: String?) {
     val vm: CartViewModel = viewModel()
     val profile by repo.session.profile.collectAsState()
     val decimals = profile?.currency?.decimals ?: 0
-    val customer by (customerKey?.let { repo.customer(it) } ?: flowOf(null)).collectAsState(initial = null)
+    val customerFlow = remember(customerKey) { customerKey?.let { repo.customer(it) } ?: flowOf(null) }
+    val customer by customerFlow.collectAsState(initial = null)
     val products by repo.products.collectAsState(initial = emptyList())
     val stockList by (if (mode.stockKind == "van") repo.vanStock else repo.mainStock).collectAsState(initial = emptyList())
     val stock = remember(stockList) { stockList.associate { it.productId to it.qty } }
     val pricelistId = if (mode.needsCustomer) repo.pricelistFor(customer) else null
-    val priceRows by (pricelistId?.let { repo.prices(it) } ?: flowOf(emptyList())).collectAsState(initial = emptyList())
+    val priceFlow = remember(pricelistId) { pricelistId?.let { repo.prices(it) } ?: flowOf(emptyList()) }
+    val priceRows by priceFlow.collectAsState(initial = emptyList())
     val prices = remember(priceRows) { priceRows.associate { it.productId to it.price } }
     var query by remember { mutableStateOf("") }
     var category by remember { mutableStateOf<String?>(null) }

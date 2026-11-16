@@ -52,7 +52,8 @@ fun HistoryScreen(nav: NavHostController) {
     val orders by repo.orders.collectAsState(initial = emptyList())
     val collections by repo.collections.collectAsState(initial = emptyList())
     val today = remember { startOfToday() }
-    val visits by repo.visitsSince(today).collectAsState(initial = emptyList())
+    val visitsFlow = remember(today) { repo.visitsSince(today) }
+    val visits by visitsFlow.collectAsState(initial = emptyList())
     val profile by repo.session.profile.collectAsState()
     val d = profile?.currency?.decimals ?: 0
     var tab by remember { mutableIntStateOf(0) }

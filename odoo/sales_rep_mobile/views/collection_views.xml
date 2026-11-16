@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="collection_view_list" model="ir.ui.view">
+        <field name="name">sales.rep.collection.list</field>
+        <field name="model">sales.rep.collection</field>
+        <field name="arch" type="xml">
+            <list create="0" decoration-muted="state == 'cancel'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="rep_id"/>
+                <field name="partner_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge"/>
+                <button name="action_cancel" type="object" string="Cancel" icon="fa-times"
+                        invisible="state != 'done'" groups="sales_rep_mobile.group_rep_manager"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_collection" model="ir.actions.act_window">
+        <field name="name">Collections</field>
+        <field name="res_model">sales.rep.collection</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

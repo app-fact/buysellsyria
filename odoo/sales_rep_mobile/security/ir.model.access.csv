@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sales_rep_user,sales.rep user,model_sales_rep,group_rep_user,1,0,0,0
+access_sales_rep_manager,sales.rep manager,model_sales_rep,group_rep_manager,1,1,1,1
+access_rep_load_user,sales.rep.load user,model_sales_rep_load,group_rep_user,1,1,1,0
+access_rep_load_manager,sales.rep.load manager,model_sales_rep_load,group_rep_manager,1,1,1,1
+access_rep_load_line_user,sales.rep.load.line user,model_sales_rep_load_line,group_rep_user,1,1,1,1
+access_van_sale_user,sales.rep.van.sale user,model_sales_rep_van_sale,group_rep_user,1,0,0,0
+access_van_sale_manager,sales.rep.van.sale manager,model_sales_rep_van_sale,group_rep_manager,1,1,0,0
+access_van_sale_line_user,sales.rep.van.sale.line user,model_sales_rep_van_sale_line,group_rep_user,1,0,0,0
+access_visit_user,sales.rep.visit user,model_sales_rep_visit,group_rep_user,1,0,0,0
+access_visit_manager,sales.rep.visit manager,model_sales_rep_visit,group_rep_manager,1,1,0,0
+access_collection_user,sales.rep.collection user,model_sales_rep_collection,group_rep_user,1,0,0,0
+access_collection_manager,sales.rep.collection manager,model_sales_rep_collection,group_rep_manager,1,1,0,0
+access_sync_log_manager,sales.rep.sync.log manager,model_sales_rep_sync_log,group_rep_manager,1,0,0,1

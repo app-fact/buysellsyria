@@ -1,0 +1,36 @@
+name: Odoo module tests
+
+on:
+  push:
+    paths: ['odoo/**', '.github/workflows/odoo.yml']
+  pull_request:
+    paths: ['odoo/**']
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: odoo:19.0
+      options: --user root
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install module and run tests
+        run: |
+          odoo --db_host db --db_user odoo --db_password odoo -d test \
+            --addons-path=/usr/lib/python3/dist-packages/odoo/addons,$GITHUB_WORKSPACE/odoo \
+            -i sales_rep_mobile --test-enable --test-tags /sales_rep_mobile \
+            --stop-after-init --log-level=test 2>&1 | tee odoo.log
+      - name: Fail on errors
+        run: |
+          if grep -E " (ERROR|CRITICAL) " odoo.log; then exit 1; fi
+          grep -E "tests? .*(passed|failed)|Ran [0-9]+ tests?" odoo.log || true

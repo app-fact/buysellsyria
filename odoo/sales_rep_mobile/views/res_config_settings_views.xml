@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_rep" model="ir.ui.view">
+        <field name="name">res.config.settings.form.sales.rep</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Van Sales" name="sales_rep_mobile" groups="sales_rep_mobile.group_rep_manager">
+                    <block title="GPS Visits" name="rep_gps">
+                        <setting string="Visit radius" help="Open a visit within this distance (metres) of the customer.">
+                            <field name="rep_geofence_radius"/>
+                        </setting>
+                        <setting string="Exit buffer" help="Extra metres before closing a visit (avoids GPS flicker).">
+                            <field name="rep_geofence_exit_buffer"/>
+                        </setting>
+                        <setting string="Max GPS accuracy" help="Ignore GPS fixes less precise than this (metres).">
+                            <field name="rep_gps_max_accuracy"/>
+                        </setting>
+                        <setting help="Let reps open/close visits by hand when GPS is not available.">
+                            <field name="rep_allow_manual_visit"/>
+                        </setting>
+                    </block>
+                    <block title="Orders &amp; Accounting" name="rep_accounting">
+                        <setting help="Confirm orders from the app immediately instead of leaving quotations.">
+                            <field name="rep_auto_confirm_orders"/>
+                        </setting>
+                        <setting string="Loading journal" help="Sales journal for the invoices issued to reps when loading.">
+                            <field name="rep_load_journal_id"/>
+                        </setting>
+                        <setting string="Integration user"
+                                 help="Internal user the mobile API acts as. Reps are not Odoo users.">
+                            <field name="rep_api_user_id"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_rep_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'sales_rep_mobile', 'bin_size': False}</field>
+    </record>
+</odoo>

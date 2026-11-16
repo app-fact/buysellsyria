@@ -1,0 +1,27 @@
+{
+    'name': 'Sales Rep Mobile (Van Sales)',
+    'summary': 'Offline-first Android app backend for van sales reps: '
+               'van stock, loading invoices, direct sales, orders, GPS visits.',
+    'version': '19.0.1.0.0',
+    'category': 'Sales/Sales',
+    'author': 'BuySellSyria',
+    'license': 'LGPL-3',
+    'depends': ['sale_stock', 'account'],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'data/sequence_data.xml',
+        'views/sales_rep_views.xml',
+        'views/rep_load_views.xml',
+        'views/van_sale_views.xml',
+        'views/visit_views.xml',
+        'views/collection_views.xml',
+        'views/sync_log_views.xml',
+        'views/res_partner_views.xml',
+        'views/sale_order_views.xml',
+        'views/res_config_settings_views.xml',
+        'views/menus.xml',
+    ],
+    'installable': True,
+    'application': True,
+}

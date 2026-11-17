@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_view_form_inherit_rep" model="ir.ui.view">
+        <field name="name">res.partner.form.sales.rep</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Van Sales" name="van_sales">
+                    <group>
+                        <group>
+                            <field name="sales_rep_id"/>
+                            <field name="rep_customer_due"/>
+                            <field name="is_sales_rep"/>
+                        </group>
+                        <group string="GPS Location">
+                            <field name="partner_latitude"/>
+                            <field name="partner_longitude"/>
+                            <field name="mobile_uuid" invisible="not mobile_uuid"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_view_search_inherit_rep" model="ir.ui.view">
+        <field name="name">res.partner.search.sales.rep</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="sales_rep_id"/>
+                <filter name="group_sales_rep" string="Van Sales Rep" context="{'group_by': 'sales_rep_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_rep_customers" model="ir.actions.act_window">
+        <field name="name">Rep Customers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('sales_rep_id', '!=', False)]</field>
+        <field name="context">{'search_default_group_sales_rep': 1}</field>
+    </record>
+</odoo>

@@ -9,9 +9,14 @@ on:
 
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        odoo: ['19.0', '20.0']
+    name: Odoo ${{ matrix.odoo }}
     runs-on: ubuntu-latest
     container:
-      image: odoo:19.0
+      image: odoo:${{ matrix.odoo }}
       options: --user root
     services:
       db:
@@ -21,16 +26,16 @@ jobs:
           POSTGRES_PASSWORD: odoo
           POSTGRES_DB: postgres
         options: >-
-          --health-cmd "pg_isready -U odoo" --health-interval 5s --health-timeout 5s --health-retries 10
+          --health-cmd "pg_isready -U odoo -d postgres" --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - name: Install module and run tests
         run: |
           odoo --db_host db --db_user odoo --db_password odoo -d test \
-            --addons-path=/usr/lib/python3/dist-packages/odoo/addons,$GITHUB_WORKSPACE/odoo \
+            --addons-path=/usr/lib/python3/dist-packages/odoo/addons,$GITHUB_WORKSPACE/odoo/${{ matrix.odoo }} \
             -i sales_rep_mobile --test-enable --test-tags /sales_rep_mobile \
             --stop-after-init --log-level=test 2>&1 | tee odoo.log
       - name: Fail on errors
         run: |
           if grep -E " (ERROR|CRITICAL) " odoo.log; then exit 1; fi
-          grep -E "tests? .*(passed|failed)|Ran [0-9]+ tests?" odoo.log || true
+          grep -E "of [0-9]+ tests" odoo.log

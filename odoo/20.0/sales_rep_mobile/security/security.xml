@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_sales_rep" model="ir.module.category">
+        <field name="name">Van Sales</field>
+        <field name="sequence">60</field>
+    </record>
+
+    <record id="privilege_sales_rep" model="res.groups.privilege">
+        <field name="name">Van Sales Reps</field>
+        <field name="sequence">10</field>
+        <field name="category_id" ref="module_category_sales_rep"/>
+    </record>
+
+    <record id="group_rep_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="privilege_sales_rep"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">See reps, visits, van sales and loadings.</field>
+    </record>
+
+    <record id="group_rep_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="privilege_sales_rep"/>
+        <field name="implied_ids" eval="[(4, ref('group_rep_user'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="comment">Configure reps, validate van loadings, cancel van sales.</field>
+    </record>
+
+    <record id="rule_sales_rep_company" model="ir.rule">
+        <field name="name">Sales rep: multi-company</field>
+        <field name="model_id" ref="model_sales_rep"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_rep_load_company" model="ir.rule">
+        <field name="name">Van loading: multi-company</field>
+        <field name="model_id" ref="model_sales_rep_load"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_van_sale_company" model="ir.rule">
+        <field name="name">Van sale: multi-company</field>
+        <field name="model_id" ref="model_sales_rep_van_sale"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_visit_company" model="ir.rule">
+        <field name="name">Rep visit: multi-company</field>
+        <field name="model_id" ref="model_sales_rep_visit"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_collection_company" model="ir.rule">
+        <field name="name">Rep collection: multi-company</field>
+        <field name="model_id" ref="model_sales_rep_collection"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

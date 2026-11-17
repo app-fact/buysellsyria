@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rep_load_view_list" model="ir.ui.view">
+        <field name="name">sales.rep.load.list</field>
+        <field name="model">sales.rep.load</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'requested'" decoration-muted="state == 'cancel'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="rep_id"/>
+                <field name="load_type"/>
+                <field name="amount_total" sum="Total"/>
+                <field name="invoice_id"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"
+                       decoration-info="state == 'requested'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="rep_load_view_form" model="ir.ui.view">
+        <field name="name">sales.rep.load.form</field>
+        <field name="model">sales.rep.load</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_done" type="object" string="Validate" class="btn-primary"
+                            invisible="state not in ('draft', 'requested')"
+                            groups="sales_rep_mobile.group_rep_manager"
+                            confirm="Stock will be moved and the rep will be invoiced. Continue?"/>
+                    <button name="action_fill_prices" type="object" string="Recompute Prices"
+                            invisible="state not in ('draft', 'requested')"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state in ('done', 'cancel')"/>
+                    <button name="action_reset_draft" type="object" string="Reset to Draft"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,requested,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button"
+                                icon="fa-pencil-square-o" string="Invoice" invisible="not invoice_id"/>
+                        <button name="action_view_picking" type="object" class="oe_stat_button"
+                                icon="fa-truck" string="Transfer" invisible="not picking_id"/>
+                    </div>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="rep_id" readonly="state == 'done'"/>
+                            <field name="load_type" readonly="state == 'done'"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="state == 'done'"/>
+                            <field name="invoice_id" invisible="not invoice_id"/>
+                            <field name="picking_id" invisible="not picking_id"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="state == 'done'">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="qty"/>
+                            <field name="uom_id"/>
+                            <field name="price_unit"/>
+                            <field name="subtotal" sum="Total"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                    <group class="oe_subtotal_footer">
+                        <field name="amount_total"/>
+                    </group>
+                    <field name="note" placeholder="Notes..."/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="rep_load_view_search" model="ir.ui.view">
+        <field name="name">sales.rep.load.search</field>
+        <field name="model">sales.rep.load</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="rep_id"/>
+                <filter name="to_validate" string="To Validate" domain="[('state', 'in', ('draft', 'requested'))]"/>
+                <filter name="loads" string="Loads" domain="[('load_type', '=', 'load')]"/>
+                <filter name="unloads" string="Unloads" domain="[('load_type', '=', 'unload')]"/>
+                <group>
+                    <filter name="group_rep" string="Rep" context="{'group_by': 'rep_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_rep_load" model="ir.actions.act_window">
+        <field name="name">Van Loading</field>
+        <field name="res_model">sales.rep.load</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_to_validate': 1}</field>
+    </record>
+</odoo>

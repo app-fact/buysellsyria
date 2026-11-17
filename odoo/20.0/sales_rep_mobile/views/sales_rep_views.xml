@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sales_rep_view_list" model="ir.ui.view">
+        <field name="name">sales.rep.list</field>
+        <field name="model">sales.rep</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="van_location_id"/>
+                <field name="balance" sum="Total"/>
+                <field name="last_sync"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sales_rep_view_form" model="ir.ui.view">
+        <field name="name">sales.rep.form</field>
+        <field name="model">sales.rep</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_reset_device" type="object" string="Reset Phone"
+                            groups="sales_rep_mobile.group_rep_manager"
+                            confirm="The rep will have to log in again on his new phone. Continue?"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_customers" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="customer_count" widget="statinfo" string="Customers"/>
+                        </button>
+                        <button name="action_open_visits" type="object" class="oe_stat_button" icon="fa-map-marker">
+                            <field name="visit_count" widget="statinfo" string="Visits"/>
+                        </button>
+                        <button name="action_open_van_sales" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="van_sale_count" widget="statinfo" string="Van Sales"/>
+                        </button>
+                        <button name="action_open_loads" type="object" class="oe_stat_button" icon="fa-truck">
+                            <field name="load_count" widget="statinfo" string="Loadings"/>
+                        </button>
+                        <button name="action_open_van_stock" type="object" class="oe_stat_button" icon="fa-cubes"
+                                string="Van Stock"/>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Rep name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Rep">
+                            <field name="code"/>
+                            <field name="phone"/>
+                            <field name="pin" password="True" groups="sales_rep_mobile.group_rep_manager"/>
+                            <field name="device_id"/>
+                            <field name="last_sync"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Stock &amp; Accounting">
+                            <field name="warehouse_id"/>
+                            <field name="van_location_id"/>
+                            <field name="partner_id"/>
+                            <field name="balance"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Prices">
+                            <field name="load_pricelist_id"/>
+                            <field name="default_pricelist_id"/>
+                        </group>
+                        <group string="Permissions">
+                            <field name="can_create_customers"/>
+                            <field name="last_van_sale_seq"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="sales_rep_view_search" model="ir.ui.view">
+        <field name="name">sales.rep.search</field>
+        <field name="model">sales.rep</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sales_rep" model="ir.actions.act_window">
+        <field name="name">Sales Reps</field>
+        <field name="res_model">sales.rep</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first van sales rep</p>
+            <p>A van location and a customer partner are created automatically for each rep.
+               Set a PIN so he can log in from the Android app.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_root" name="Van Sales" sequence="25" web_icon="sales_rep_mobile,static/description/icon.png"
+              groups="sales_rep_mobile.group_rep_user"/>
+
+    <menuitem id="menu_operations" name="Operations" parent="menu_root" sequence="10"/>
+    <menuitem id="menu_loads" name="Van Loading" parent="menu_operations" action="action_rep_load" sequence="10"/>
+    <menuitem id="menu_van_sales" name="Van Sales" parent="menu_operations" action="action_van_sale" sequence="20"/>
+    <menuitem id="menu_orders" name="Rep Orders" parent="menu_operations" action="action_rep_orders" sequence="30"/>
+    <menuitem id="menu_collections" name="Collections" parent="menu_operations" action="action_collection" sequence="40"/>
+    <menuitem id="menu_visits" name="Visits" parent="menu_operations" action="action_visit" sequence="50"/>
+
+    <menuitem id="menu_master" name="Reps &amp; Customers" parent="menu_root" sequence="20"/>
+    <menuitem id="menu_reps" name="Sales Reps" parent="menu_master" action="action_sales_rep" sequence="10"/>
+    <menuitem id="menu_rep_customers" name="Rep Customers" parent="menu_master" action="action_rep_customers" sequence="20"/>
+
+    <menuitem id="menu_config" name="Configuration" parent="menu_root" sequence="90"
+              groups="sales_rep_mobile.group_rep_manager"/>
+    <menuitem id="menu_settings" name="Settings" parent="menu_config" action="action_rep_settings" sequence="10"/>
+    <menuitem id="menu_sync_log" name="Sync Log" parent="menu_config" action="action_sync_log" sequence="20"/>
+</odoo>

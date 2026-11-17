@@ -13,8 +13,9 @@ def move_vals(env, product, qty, src, dest, description=None):
         'location_id': src.id,
         'location_dest_id': dest.id,
     }
-    if 'product_uom' in env['stock.move']._fields:
-        vals['product_uom'] = product.uom_id.id
+    move_fields = env['stock.move']._fields
+    uom_field = 'uom_id' if 'uom_id' in move_fields else 'product_uom'  # renamed in Odoo 20
+    vals[uom_field] = product.uom_id.id
     if 'name' in env['stock.move']._fields:
         vals['name'] = description or product.display_name
     return vals

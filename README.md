@@ -5,7 +5,7 @@
 | الجزء | المسار | التقنية |
 |---|---|---|
 | تطبيق أندرويد للمندوب | `android/` | Kotlin + Jetpack Compose، Room (قاعدة بيانات على الهاتف)، WorkManager |
-| موديول أودو | `odoo/sales_rep_mobile/` | Odoo 19 (Community أو Enterprise) |
+| موديول أودو | `odoo/19.0/sales_rep_mobile/` و `odoo/20.0/sales_rep_mobile/` | Odoo 19 و Odoo 20 (Community أو Enterprise) |
 
 ## ماذا يعمل النظام
 
@@ -32,7 +32,7 @@
 
 ## تنصيب موديول أودو
 
-1. انسخ المجلد `odoo/sales_rep_mobile` إلى مجلد الإضافات (addons) في سيرفر أودو 19.
+1. انسخ المجلد المناسب لإصدارك (`odoo/19.0/sales_rep_mobile` أو `odoo/20.0/sales_rep_mobile`) إلى مجلد الإضافات (addons) في سيرفر أودو.
 2. حدّث قائمة التطبيقات ثم نصّب **Van Sales** (`sales_rep_mobile`). يعتمد على: المبيعات، المخزون، المحاسبة.
 3. **مهم**: الـ API يعمل بدون تسجيل دخول للمندوب، لذلك يجب أن يحدد السيرفر قاعدة البيانات تلقائياً:
    قاعدة بيانات واحدة، أو `dbfilter` في ملف إعدادات أودو (مثال: `dbfilter = ^mycompany$`).
@@ -93,7 +93,7 @@ keyPassword=...
 ## الاختبارات
 
 - `android/core`: اختبارات وحدة لمحرك الزيارات (الفتح عند 50 م، الهامش، قفزات GPS، المحلات المتجاورة، الزيارة اليدوية)، الحسابات، الترقيم، ترميز الطباعة.
-- `odoo/sales_rep_mobile/tests`: الدخول، التحميل (فاتورة + مخزون)، البيع من السيارة وعدم التكرار، زبون جديد بدون نت ← زيارة ← طلبية، عزل الأخطاء، المزامنة.
+- `odoo/<version>/sales_rep_mobile/tests`: الدخول، التحميل (فاتورة + مخزون)، البيع من السيارة وعدم التكرار، زبون جديد بدون نت ← زيارة ← طلبية، عزل الأخطاء، المزامنة.
   تشغيل: `odoo -d test -i sales_rep_mobile --test-enable --test-tags /sales_rep_mobile --stop-after-init`
 
 تفاصيل التصميم وبروتوكول المزامنة: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).

@@ -11,6 +11,11 @@ class TestMobileApi(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # The accounting test base runs as a restricted user: give it the
+        # rights a van-sales manager / warehouse manager would have.
+        cls.env.user.group_ids |= (cls.env.ref('sales_rep_mobile.group_rep_manager')
+                                   | cls.env.ref('stock.group_stock_manager')
+                                   | cls.env.ref('sales_team.group_sale_manager'))
         cls.api = cls.env['sales.rep.mobile.api']
         cls.warehouse = cls.env['stock.warehouse'].search([('company_id', '=', cls.env.company.id)], limit=1)
         cls.product = cls.env['product.product'].create({

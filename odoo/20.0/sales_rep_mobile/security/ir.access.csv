@@ -1,14 +1,14 @@
 id,name,model_id,group_id/id,operation,domain
-access_sales_rep_user,sales.rep user,sales.rep,sales_rep_mobile.group_rep_user,r,
-access_sales_rep_manager,sales.rep manager,sales.rep,sales_rep_mobile.group_rep_manager,crud,
-access_rep_load_user,sales.rep.load user,sales.rep.load,sales_rep_mobile.group_rep_user,cru,
-access_rep_load_manager,sales.rep.load manager,sales.rep.load,sales_rep_mobile.group_rep_manager,crud,
+access_sales_rep_user,sales.rep user,sales.rep,sales_rep_mobile.group_rep_user,r,"[('company_id', 'in', company_ids)]"
+access_sales_rep_manager,sales.rep manager,sales.rep,sales_rep_mobile.group_rep_manager,crud,"[('company_id', 'in', company_ids)]"
+access_rep_load_user,sales.rep.load user,sales.rep.load,sales_rep_mobile.group_rep_user,cru,"[('company_id', 'in', company_ids)]"
+access_rep_load_manager,sales.rep.load manager,sales.rep.load,sales_rep_mobile.group_rep_manager,crud,"[('company_id', 'in', company_ids)]"
 access_rep_load_line_user,sales.rep.load.line user,sales.rep.load.line,sales_rep_mobile.group_rep_user,crud,
-access_van_sale_user,sales.rep.van.sale user,sales.rep.van.sale,sales_rep_mobile.group_rep_user,r,
-access_van_sale_manager,sales.rep.van.sale manager,sales.rep.van.sale,sales_rep_mobile.group_rep_manager,ru,
+access_van_sale_user,sales.rep.van.sale user,sales.rep.van.sale,sales_rep_mobile.group_rep_user,r,"[('company_id', 'in', company_ids)]"
+access_van_sale_manager,sales.rep.van.sale manager,sales.rep.van.sale,sales_rep_mobile.group_rep_manager,ru,"[('company_id', 'in', company_ids)]"
 access_van_sale_line_user,sales.rep.van.sale.line user,sales.rep.van.sale.line,sales_rep_mobile.group_rep_user,r,
-access_visit_user,sales.rep.visit user,sales.rep.visit,sales_rep_mobile.group_rep_user,r,
-access_visit_manager,sales.rep.visit manager,sales.rep.visit,sales_rep_mobile.group_rep_manager,ru,
-access_collection_user,sales.rep.collection user,sales.rep.collection,sales_rep_mobile.group_rep_user,r,
-access_collection_manager,sales.rep.collection manager,sales.rep.collection,sales_rep_mobile.group_rep_manager,ru,
+access_visit_user,sales.rep.visit user,sales.rep.visit,sales_rep_mobile.group_rep_user,r,"[('company_id', 'in', company_ids)]"
+access_visit_manager,sales.rep.visit manager,sales.rep.visit,sales_rep_mobile.group_rep_manager,ru,"[('company_id', 'in', company_ids)]"
+access_collection_user,sales.rep.collection user,sales.rep.collection,sales_rep_mobile.group_rep_user,r,"[('company_id', 'in', company_ids)]"
+access_collection_manager,sales.rep.collection manager,sales.rep.collection,sales_rep_mobile.group_rep_manager,ru,"[('company_id', 'in', company_ids)]"
 access_sync_log_manager,sales.rep.sync.log manager,sales.rep.sync.log,sales_rep_mobile.group_rep_manager,rd,

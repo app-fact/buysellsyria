@@ -27,35 +27,4 @@
         <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         <field name="comment">Configure reps, validate van loadings, cancel van sales.</field>
     </record>
-
-    <record id="rule_sales_rep_company" model="ir.rule">
-        <field name="name">Sales rep: multi-company</field>
-        <field name="model_id" ref="model_sales_rep"/>
-        <field name="global" eval="True"/>
-        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-    </record>
-    <record id="rule_rep_load_company" model="ir.rule">
-        <field name="name">Van loading: multi-company</field>
-        <field name="model_id" ref="model_sales_rep_load"/>
-        <field name="global" eval="True"/>
-        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-    </record>
-    <record id="rule_van_sale_company" model="ir.rule">
-        <field name="name">Van sale: multi-company</field>
-        <field name="model_id" ref="model_sales_rep_van_sale"/>
-        <field name="global" eval="True"/>
-        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-    </record>
-    <record id="rule_visit_company" model="ir.rule">
-        <field name="name">Rep visit: multi-company</field>
-        <field name="model_id" ref="model_sales_rep_visit"/>
-        <field name="global" eval="True"/>
-        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-    </record>
-    <record id="rule_collection_company" model="ir.rule">
-        <field name="name">Rep collection: multi-company</field>
-        <field name="model_id" ref="model_sales_rep_collection"/>
-        <field name="global" eval="True"/>
-        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-    </record>
 </odoo>

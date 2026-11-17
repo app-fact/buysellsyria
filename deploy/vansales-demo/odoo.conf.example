@@ -1,0 +1,16 @@
+[options]
+; enterprise first so its overrides (web_enterprise, ...) win
+addons_path = /mnt/enterprise,/opt/odoo/addons,/mnt/extra-addons
+data_dir = /var/lib/odoo
+admin_passwd = <ODOO_MASTER_PASSWORD>
+db_name = vansales
+; the mobile API has no login session: the database must be resolved from the config
+dbfilter = ^vansales$
+list_db = False
+proxy_mode = True
+workers = 0
+max_cron_threads = 1
+limit_time_cpu = 300
+limit_time_real = 600
+log_level = info
+http_interface = 0.0.0.0

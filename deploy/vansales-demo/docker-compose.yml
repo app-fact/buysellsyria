@@ -1,0 +1,41 @@
+# Van-sales demo - Odoo 20 + sales_rep_mobile (Android app backend)
+# https://vansales.prolabtech.net   Server path: /root/vansales-odoo   (DB_PASSWORD lives in .env there)
+# Lean threaded stack like the trial stacks: the VPS is shared and short on RAM.
+services:
+  vansales-odoo-db:
+    image: postgres:16
+    container_name: vansales-odoo-db
+    restart: unless-stopped
+    command: postgres -c shared_buffers=64MB -c work_mem=4MB -c maintenance_work_mem=32MB -c max_connections=40
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - vansales-odoo-db-data:/var/lib/postgresql/data
+    mem_limit: 384m
+
+  vansales-odoo:
+    image: ${ODOO_IMAGE:-prolabtech/odoo-prolabtech:20-enterprise}
+    container_name: vansales-odoo
+    restart: unless-stopped
+    depends_on:
+      - vansales-odoo-db
+    environment:
+      HOST: vansales-odoo-db
+      USER: odoo
+      PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "127.0.0.1:${ODOO_PORT:-8188}:8069"
+    volumes:
+      - /root/prolabtech-odoo/enterprise:/mnt/enterprise:ro
+      - ./config/odoo.conf:/etc/odoo/odoo.conf:ro
+      - ./addons:/mnt/extra-addons:ro
+      - ./scripts:/mnt/scripts:ro
+      - vansales-odoo-data:/var/lib/odoo
+    command: odoo -c /etc/odoo/odoo.conf
+    mem_limit: 1200m
+
+volumes:
+  vansales-odoo-db-data:
+  vansales-odoo-data:
